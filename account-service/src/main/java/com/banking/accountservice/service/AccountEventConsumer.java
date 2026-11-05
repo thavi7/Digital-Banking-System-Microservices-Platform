@@ -18,7 +18,7 @@ import java.util.Map;
 public class AccountEventConsumer {
     private final AccountService accountService;
     private final ModelMapper modelMapper;
-    private static SecureRandom secureRandom=new SecureRandom();
+   // private static SecureRandom secureRandom=new SecureRandom();
 
     @KafkaListener(topics = "transaction.completed")
     public void consumeTransactionCompleted(
