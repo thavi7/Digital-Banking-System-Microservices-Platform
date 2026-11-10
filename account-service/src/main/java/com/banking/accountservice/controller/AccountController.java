@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 public class AccountController {
     private final AccountService accountService;
 
+    //create an account
     @PostMapping
     public ResponseEntity<AccountResponse> createAccount(
             @Valid @RequestBody CreateAccountRequest request) {
@@ -28,6 +29,7 @@ public class AccountController {
                 .body(accountService.createAccount(request));
     }
 
+    //get account by account number
     @GetMapping("/{accountNumber}")
     public ResponseEntity<AccountResponse> getAccount(
             @PathVariable String accountNumber) {
@@ -35,6 +37,7 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getAccount(accountNumber));
     }
 
+    //get balance of an account
     @GetMapping("/{accountNumber}/balance")
     public ResponseEntity<BigDecimal> getBalance(
             @PathVariable String accountNumber) {
@@ -42,6 +45,7 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getBalance(accountNumber));
     }
 
+    //block an account
     @PutMapping("/{accountNumber}/block")
     public ResponseEntity<String> blockAccount(
             @PathVariable String accountNumber) {
@@ -49,6 +53,7 @@ public class AccountController {
         return ResponseEntity.ok("Account Blocked Successfully");
     }
 
+    //deduct money from an account by acc number
     @PutMapping("/{accountNumber}/deduct")
     public ResponseEntity<String> deductBalance(
             @PathVariable String accountNumber,
@@ -58,6 +63,7 @@ public class AccountController {
         return ResponseEntity.ok("Balance deducted Successfully");
     }
 
+    //add money to account by account number
     @PutMapping("/{accountNumber}/credit")
     public ResponseEntity<String> creditBalance(
             @PathVariable String accountNumber,

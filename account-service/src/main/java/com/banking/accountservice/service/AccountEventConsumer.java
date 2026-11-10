@@ -15,10 +15,10 @@ import java.util.Map;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+// its a consumer take data from kafka...
 public class AccountEventConsumer {
+
     private final AccountService accountService;
-    private final ModelMapper modelMapper;
-   // private static SecureRandom secureRandom=new SecureRandom();
 
     @KafkaListener(topics = "transaction.completed")
     public void consumeTransactionCompleted(

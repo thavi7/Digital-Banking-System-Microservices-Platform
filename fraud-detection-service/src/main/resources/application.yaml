@@ -1,3 +1,7 @@
 spring:
   application:
     name: fraud-detection-service
+fraud:
+  max-Transaction-Per-Minute:5
+  fraud.suspicious-amount-multiplier:5
+  fraud.max-balance-percentage:0.90
