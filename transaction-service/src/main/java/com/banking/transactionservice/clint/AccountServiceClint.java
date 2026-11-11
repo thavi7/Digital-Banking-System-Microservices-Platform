@@ -14,4 +14,9 @@ public interface AccountServiceClint {
     String deductBalance(
             @PathVariable String accountNumber,
             @RequestParam BigDecimal amount);
+    @PutMapping("/accounts/{accountNumber}/credit")
+    String creditBalance(
+            @PathVariable String accountNumber,
+            @RequestParam BigDecimal amount);
+
 }

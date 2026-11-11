@@ -2,6 +2,7 @@ package com.banking.notificationservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,8 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class NotificationService {
+
+    @KafkaListener(topics = "transaction.otp.grnerated")
     public void consumeOtpGenerated(
             @Payload Map<String ,Object>payload){
 
@@ -21,20 +24,25 @@ public class NotificationService {
             String amount = payload.get("amount").toString();
             String reason = (String) payload.get("reason");
 
-//            sendAlert(accountNumber,
-//                    "TRANSACTION VERIFICATION REQUIRED",
-//                    String.format(
-//                            "Suspicious activity detected on your account. " +
-//                                    "Reason: %s " +
-//                                    "A transaction of %s is pending verification. " +
-//                                    "Your OTP is: %s. Valid for 5 minutes. " +
-//                                    "If this wasn't you - ignore this message.",
-//                            reason, amount, otp
-//                    )
-//            );
+            sendAlert(accountNumber,
+                    "TRANSACTION VERIFICATION REQUIRED",
+                    String.format(
+                            "Suspicious activity detected on your account. " +
+                                    "Reason: %s " +
+                                    "A transaction of %s is pending verification. " +
+                                    "Your OTP is: %s. Valid for 5 minutes. " +
+                                    "If this wasn't you - ignore this message.",
+                            reason, amount, otp
+                    )
+            );
 
         } catch (Exception e) {
             log.error("Error sending OTP notification: {}", e.getMessage());
         }
     }
+
+    private void sendAlert(String accountNumber,String subject,String message){
+
+    }
+
 }
