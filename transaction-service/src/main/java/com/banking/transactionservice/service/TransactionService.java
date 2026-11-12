@@ -48,8 +48,12 @@ public class TransactionService {
                 request.getReceiverAccountNumber(),
                 request.getAmount()
         );
+
+
         //SAGA Step 1 -->
+        //detected money from sender if fraud detect then we will refund by saga
         accountServiceClint.deductBalance(request.getSenderAccountNumber(), request.getAmount());
+
         Transaction transaction = new Transaction();
         transaction.setSenderAccountNumber(request.getSenderAccountNumber());
         transaction.setReceiverAccountNumber(request.getReceiverAccountNumber());
@@ -66,10 +70,11 @@ public class TransactionService {
         TransactionInitiatedEvent event = new TransactionInitiatedEvent(
                 savetransaction.getId(),
                 savetransaction.getSenderAccountNumber(),
-                savetransaction.getSenderAccountNumber(),
+                savetransaction.getReceiverAccountNumber(),
                 savetransaction.getAmount(),
                 savetransaction.getDescription()
         );
+        //publishing that event to kafka for fraud check
         kafkaTemplate.send(TRANSACTION_INITIATED_TOPIC,savetransaction.getId(),event);
         log.info("SAGA STEP 2 - TransactionInitiatedEvent published: {} ", savetransaction.getId());
 
@@ -195,9 +200,5 @@ public class TransactionService {
         }
         completeTransaction(transaction);
     }
-
-
-
-
 
 }

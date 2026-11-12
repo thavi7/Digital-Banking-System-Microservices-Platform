@@ -1,0 +1,4 @@
+transaction.completed --> TransactionService --> creat & AccountEventConsumer --> consume
+fraud.detected --> TransactionService --> creat & AccountEventConsumer --> consume
+transaction.initiated --> TransactionService --> creat & FraudDetectionEventConsumer consume
+transaction.refunded --> TransactionService --> creat &
