@@ -29,7 +29,7 @@ public class TransactionEventConsumer {
     private final KafkaTemplate<String,Object>kafkaTemplate;
     private final ModelMapper modelMapper;
 
-    private static final Long otpexpirymin = 5L;
+    private static final Long otpexpirymin = 2L;
     private static final String TRANSACTION_OTP_GENERATED_TOPIC = "transaction.otp.generated";
 
     @KafkaListener(topics = "verification.required")

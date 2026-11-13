@@ -80,6 +80,7 @@ public class FraudDetectionService {
     ){
         // Pattern 1: Velocity Check
         if (isVelocityExceeded(accountNumber)) {
+            log.info("Checking velocity exceed");
             return new FraudCheckResult(
                     true,
                     "Too many transactions in 60 seconds - Velocity limit exceeded");
@@ -87,6 +88,7 @@ public class FraudDetectionService {
 
         // Pattern 2: Amount check
         if (isAmountSuspicious(accountNumber, amount)) {
+            log.info("Checking avg");
             return new FraudCheckResult(
                     true,
                     "Unusual transaction amount - exceeds 3x your average");
@@ -95,6 +97,7 @@ public class FraudDetectionService {
         // Pattern 3: Balance Check
         if (senderBalance.compareTo(BigDecimal.ZERO) > 0
                 && isBalanceCheckFailed(senderBalance, amount)) {
+            log.info("Checking 90% exceed");
             return new FraudCheckResult(
                     true,
                     "Transaction exceed 90% of account balance");
@@ -110,7 +113,7 @@ public class FraudDetectionService {
         if(count!=null && count==1){
             redisTemplate.expire(key,60, TimeUnit.SECONDS);
         }
-        log.info("Velocity Check - amount: {} count: {}/{}",accountNumber,count,maxTransactionPerMinute);
+        log.info("Velocity Check - accountNumber: {} count: {}/{}",accountNumber,count,maxTransactionPerMinute);
         return count != null && count > maxTransactionPerMinute;
     }
 
@@ -127,16 +130,17 @@ public class FraudDetectionService {
 
         BigDecimal newavg= avgAmount.add(amount).divide(BigDecimal.valueOf(2),2, RoundingMode.HALF_UP);
         redisTemplate.opsForValue().set(avgkey,newavg.toString());
-        log.info("Amount Check - amount: {} threshold: {} suspicious: {}",
+        log.info("Amount Check - accountNumber: {} threshold: {} suspicious: {}",
                 accountNumber,threshhold,amount.compareTo(threshhold)>0);
 
         return amount.compareTo(threshhold)>0;
     }
 
     private boolean isBalanceCheckFailed(BigDecimal balance,BigDecimal amount){
+        balance = balance.add(amount);
         BigDecimal maxAllowed = balance.multiply(BigDecimal.valueOf(maxbalancepercentage));
-        log.info("Balance Check - amount: {} maxAllowed: {} suspicious: {}",
-                amount,maxAllowed,amount.compareTo(maxAllowed)>0);
+        log.info("Balance Check - balance: {} amount: {} maxAllowed: {} suspicious: {}",
+                balance,amount,maxAllowed,amount.compareTo(maxAllowed)>0);
 
         return amount.compareTo(maxAllowed)>0;
     }

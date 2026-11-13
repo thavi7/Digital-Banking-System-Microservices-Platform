@@ -71,6 +71,7 @@ public class AccountService {
                 .orElseThrow(() -> new RuntimeException("Account not found"));
 
          account.setAccountStatus(AccountStatus.BLOCKED);
+         accountRepository.save(account);
         log.info("Blocked Account: {}", accountNumber);
     }
 
