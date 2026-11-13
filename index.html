@@ -1,0 +1,425 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avionyx · Add Money (Razorpay Test)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy-900:#0a1b3d;
+  --navy-700:#12306b;
+  --navy-500:#1f4aa8;
+  --navy-100:#e6ecf8;
+  --ink:#0a1b3d;
+  --muted:#5b6b8c;
+  --line:#dde4f1;
+  --bg:#f4f7fc;
+  --card:#fff;
+  --ok:#0f7b4d;
+  --warn:#8a5a00;
+  --err:#b3261e;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:Inter,system-ui,sans-serif;
+  color:var(--ink);
+  background:radial-gradient(900px 420px at 50% -120px,#dbe5f8 0%,transparent 70%),var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:28px 16px;
+}
+.wrap{width:100%;max-width:460px}
+.brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:18px}
+.brand svg{width:34px;height:34px}
+.brand span{font-family:Sora,Inter,sans-serif;font-weight:700;font-size:22px;color:var(--navy-900)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 24px 60px -28px rgba(10,27,61,.35);overflow:hidden}
+.card-head{background:linear-gradient(135deg,var(--navy-900),var(--navy-700));color:#fff;padding:26px 28px 24px}
+.card-head h1{margin:0 0 4px;font-family:Sora,Inter,sans-serif;font-size:22px;font-weight:600}
+.card-head p{margin:0;font-size:13.5px;color:#b9c8ea}
+.mode-tag{display:inline-block;margin-top:14px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.14);color:#e6ecf8}
+form{padding:26px 28px 28px}
+.field{margin-bottom:18px}
+label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:var(--navy-700)}
+input{width:100%;font:inherit;font-size:15.5px;color:var(--ink);padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff}
+input:focus{outline:none;border-color:var(--navy-500);box-shadow:0 0 0 4px rgba(31,74,168,.14)}
+input.invalid{border-color:var(--err)}
+.input-wrap{position:relative}
+.prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-weight:600;color:var(--muted);pointer-events:none}
+input.has-prefix{padding-left:32px;font-weight:600}
+.hint{min-height:18px;margin-top:6px;font-size:12.5px;color:var(--muted)}
+.hint.error{color:var(--err)}
+.btn{width:100%;font:inherit;font-weight:600;font-size:16px;color:#fff;cursor:pointer;background:linear-gradient(135deg,var(--navy-700),var(--navy-900));border:0;border-radius:12px;padding:15px;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn:disabled{opacity:.75;cursor:progress}
+.spinner{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite;display:none}
+.btn.loading .spinner{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.status{margin:0 28px 24px;display:none}
+.status.show{display:block}
+.banner{display:flex;gap:12px;padding:14px 16px;border-radius:12px;font-size:14px;line-height:1.45}
+.banner .ico{flex:none;width:22px;height:22px;margin-top:1px}
+.banner strong{display:block;font-weight:600;margin-bottom:2px}
+.banner small{display:block;font-size:12.5px;opacity:.9;word-break:break-word}
+.banner.progress{background:var(--navy-100);color:var(--navy-700)}
+.banner.pending{background:#fff4dc;color:var(--warn)}
+.banner.fail{background:#fdeceb;color:var(--err)}
+.banner.neutral{background:#eef1f7;color:var(--muted)}
+.dot-spin{border:2.5px solid rgba(18,48,107,.25);border-top-color:var(--navy-700);border-radius:50%;animation:spin .7s linear infinite}
+.details{margin-top:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.details h2{margin:0;padding:11px 14px;font-size:13px;font-weight:600;background:#f7f9fd;border-bottom:1px solid var(--line);color:var(--navy-700)}
+.row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid #edf1f8;font-size:13.5px}
+.row:last-child{border-bottom:0}
+.row .k{color:var(--muted);flex:none}
+.row .v{text-align:right;word-break:break-all;display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.row .v.mono{font-family:ui-monospace,monospace;font-size:12.5px}
+.copy{font:inherit;font-size:11.5px;font-weight:600;color:var(--navy-500);background:var(--navy-100);border:0;border-radius:6px;padding:3px 8px;cursor:pointer;flex:none}
+.reset{margin-top:14px;width:100%;font:inherit;font-weight:600;font-size:14px;color:var(--navy-700);background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:11px;cursor:pointer}
+.foot{text-align:center;margin-top:16px;font-size:12px;color:var(--muted);line-height:1.6}
+.foot code{background:#e9eef8;padding:1px 6px;border-radius:5px;font-size:11.5px}
+@media(max-width:420px){.card-head,form{padding-left:20px;padding-right:20px}.status{margin-left:20px;margin-right:20px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="brand">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#0a1b3d"/><path d="M8 29 20 9l12 20h-6.2L20 19.4 14.2 29z" fill="#fff"/></svg>
+    <span>Avionyx</span>
+  </div>
+
+  <section class="card">
+    <div class="card-head">
+      <h1>Add money</h1>
+      <p>Fund an account through Razorpay Checkout.</p>
+      <span class="mode-tag">Razorpay Test Mode</span>
+    </div>
+
+    <form id="payForm" novalidate>
+      <div class="field">
+        <label for="accountNumber">Account number</label>
+        <input id="accountNumber" inputmode="numeric" autocomplete="off" placeholder="1234567890" maxlength="20">
+        <div class="hint" id="accountHint"></div>
+      </div>
+      <div class="field">
+        <label for="amount">Amount</label>
+        <div class="input-wrap">
+          <span class="prefix">₹</span>
+          <input id="amount" class="has-prefix" inputmode="decimal" autocomplete="off" placeholder="500">
+        </div>
+        <div class="hint" id="amountHint"></div>
+      </div>
+      <div class="field">
+        <label for="description">Description</label>
+        <input id="description" autocomplete="off" placeholder="Test deposit" maxlength="255">
+        <div class="hint" id="descHint"></div>
+      </div>
+      <button class="btn" id="payBtn" type="submit">
+        <span class="spinner"></span>
+        <span id="btnLabel">Add money</span>
+      </button>
+    </form>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </section>
+  <p class="foot">Requests go through API Gateway at <code id="gwLabel"></code><br>Razorpay Test Mode</p>
+</main>
+
+<script>
+(() => {
+'use strict';
+
+const API_GATEWAY = 'http://localhost:8080';
+const CREATE_ORDER_URL = API_GATEWAY + '/payments/create-order';
+const CHECKOUT_SRC = 'https://checkout.razorpay.com/v1/checkout.js';
+
+const $ = id => document.getElementById(id);
+const form = $('payForm');
+const btn = $('payBtn');
+const btnLabel = $('btnLabel');
+const statusEl = $('status');
+
+const inputs = {
+  accountNumber: $('accountNumber'),
+  amount: $('amount'),
+  description: $('description')
+};
+
+const hints = {
+  accountNumber: $('accountHint'),
+  amount: $('amountHint'),
+  description: $('descHint')
+};
+
+$('gwLabel').textContent = API_GATEWAY;
+
+const inr = new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'INR'
+});
+
+let busy = false;
+
+function showStatus(kind, title, detail, extra = '') {
+  statusEl.className = 'status show';
+  statusEl.innerHTML =
+    '<div class="banner ' + kind + '">' +
+    '<div><strong>' + title + '</strong><small>' + detail + '</small></div>' +
+    '</div>' + extra;
+}
+
+function detailsTable(title, rows) {
+  const body = rows.filter(r => r[1] !== undefined && r[1] !== null && r[1] !== '')
+    .map(r =>
+      '<div class="row"><span class="k">' + r[0] +
+      '</span><span class="v' + (r[2] ? ' mono' : '') + '">' +
+      '<span>' + String(r[1]) + '</span></span></div>'
+    ).join('');
+
+  return '<div class="details"><h2>' + title + '</h2>' + body + '</div>';
+}
+
+function setBusy(on, label) {
+  busy = on;
+  btn.disabled = on;
+  btn.classList.toggle('loading', on);
+  btnLabel.textContent = label || 'Add money';
+}
+
+function setError(name, message) {
+  inputs[name].classList.toggle('invalid', !!message);
+  hints[name].textContent = message || '';
+  hints[name].classList.toggle('error', !!message);
+}
+
+function clearErrors() {
+  Object.keys(inputs).forEach(name => setError(name, ''));
+}
+
+function validate() {
+  clearErrors();
+
+  const accountNumber = inputs.accountNumber.value.trim();
+  const amountText = inputs.amount.value.trim();
+  const description = inputs.description.value.trim();
+
+  let valid = true;
+  let firstInvalid = null;
+
+  function fail(name, message) {
+    setError(name, message);
+    valid = false;
+    if (!firstInvalid) firstInvalid = inputs[name];
+  }
+
+  if (!/^\d{6,20}$/.test(accountNumber)) {
+    fail('accountNumber', 'Enter a valid account number containing 6 to 20 digits.');
+  }
+
+  const amount = Number(amountText);
+
+  if (!amountText || !Number.isFinite(amount) || amount < 1 || amount > 500000) {
+    fail('amount', 'Enter an amount between ₹1 and ₹5,00,000.');
+  }
+
+  if (!description) {
+    fail('description', 'Enter a description.');
+  }
+
+  if (firstInvalid) firstInvalid.focus();
+
+  return valid ? { accountNumber, amount, description } : null;
+}
+
+inputs.accountNumber.addEventListener('input', () => {
+  inputs.accountNumber.value = inputs.accountNumber.value.replace(/\D/g, '');
+  setError('accountNumber', '');
+});
+
+inputs.amount.addEventListener('input', () => {
+  inputs.amount.value = inputs.amount.value.replace(/[^\d.]/g, '');
+  setError('amount', '');
+});
+
+inputs.description.addEventListener('input', () => {
+  setError('description', '');
+});
+
+function loadCheckout() {
+  if (window.Razorpay) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = CHECKOUT_SRC;
+    script.onload = () => window.Razorpay
+      ? resolve()
+      : reject(new Error('Razorpay Checkout could not initialize.'));
+    script.onerror = () => reject(new Error('Unable to load Razorpay Checkout. Check your internet connection.'));
+    document.head.appendChild(script);
+  });
+}
+
+async function createOrder(payload) {
+  let response;
+
+  try {
+    response = await fetch(CREATE_ORDER_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (error) {
+    throw new Error(
+      'Could not call the API Gateway. Check that it is running on port 8080 and that CORS allows this frontend origin. Browser detail: ' + error.message
+    );
+  }
+
+  const responseText = await response.text();
+  let data;
+
+  try {
+    data = responseText ? JSON.parse(responseText) : {};
+  } catch {
+    throw new Error('Gateway returned a non-JSON response: ' + responseText.slice(0, 200));
+  }
+
+  if (!response.ok) {
+    throw new Error('HTTP ' + response.status + ': ' + (data.message || data.error || responseText));
+  }
+
+  return data.data && typeof data.data === 'object' ? data.data : data;
+}
+
+function getAmountInPaise(returnedAmount, enteredAmount) {
+  const value = Number(returnedAmount);
+  const expectedPaise = Math.round(enteredAmount * 100);
+
+  if (!Number.isFinite(value) || value <= 0) return null;
+  if (value === expectedPaise) return value;
+  if (Math.round(value * 100) === expectedPaise) return expectedPaise;
+
+  return null;
+}
+
+form.addEventListener('submit', async event => {
+  event.preventDefault();
+
+  if (busy) return;
+
+  const payload = validate();
+  if (!payload) return;
+
+  setBusy(true, 'Creating order...');
+  showStatus('progress', 'Creating order', 'Contacting Avionyx Payment Service...');
+
+  let order;
+
+  try {
+    order = await createOrder(payload);
+
+    if (!order.razorpayOrderId || !order.razorpayKeyId) {
+      throw new Error('Backend response must contain razorpayOrderId and razorpayKeyId.');
+    }
+
+    const amountPaise = getAmountInPaise(order.amount, payload.amount);
+
+    if (amountPaise === null) {
+      throw new Error('Backend amount does not match the entered amount.');
+    }
+
+    await loadCheckout();
+
+    const orderRows = [
+      ['Avionyx Payment ID', order.paymentId, true],
+      ['Razorpay Order ID', order.razorpayOrderId, true],
+      ['Amount', inr.format(payload.amount)],
+      ['Account Number', payload.accountNumber],
+      ['Order Status', order.status]
+    ];
+
+    let settled = false;
+
+    const options = {
+      key: order.razorpayKeyId,
+      order_id: order.razorpayOrderId,
+      amount: amountPaise,
+      currency: order.currency || 'INR',
+      name: 'Avionyx',
+      description: payload.description,
+      notes: {
+        accountNumber: payload.accountNumber,
+        description: payload.description
+      },
+      theme: {
+        color: '#12306b'
+      },
+      handler: function(response) {
+        settled = true;
+        setBusy(false);
+
+        showStatus(
+          'pending',
+          'Checkout completed — awaiting backend verification',
+          'Razorpay returned a payment response. Your backend must verify the signature before crediting the account.',
+          detailsTable('Razorpay Response', [
+            ['Payment ID', response.razorpay_payment_id],
+            ['Order ID', response.razorpay_order_id],
+            ['Signature', response.razorpay_signature]
+          ]) +
+          detailsTable('Order Details', orderRows)
+        );
+      },
+      modal: {
+        ondismiss: function() {
+          if (settled) return;
+
+          settled = true;
+          setBusy(false);
+
+          showStatus(
+            'neutral',
+            'Checkout closed',
+            'Checkout was closed. Payment status has not been confirmed.',
+            detailsTable('Order Details', orderRows)
+          );
+        }
+      }
+    };
+
+    const checkout = new window.Razorpay(options);
+
+    checkout.on('payment.failed', function(response) {
+      settled = true;
+      setBusy(false);
+
+      const error = response.error || {};
+
+      showStatus(
+        'fail',
+        'Payment failed',
+        error.description || 'Razorpay could not complete the payment.',
+        detailsTable('Failure Details', [
+          ['Code', error.code],
+          ['Reason', error.reason],
+          ['Payment ID', error.metadata && error.metadata.payment_id],
+          ['Order ID', error.metadata && error.metadata.order_id]
+        ])
+      );
+    });
+
+    setBusy(false);
+    showStatus('progress', 'Opening Razorpay Checkout', 'Your Razorpay order has been created.');
+    checkout.open();
+
+  } catch (error) {
+    setBusy(false);
+    showStatus('fail', 'Payment Error', error.message);
+  }
+});
+})();
+</script>
+</body>
+</html>
