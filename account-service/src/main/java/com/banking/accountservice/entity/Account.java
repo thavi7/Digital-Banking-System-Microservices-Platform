@@ -32,9 +32,11 @@ public class Account {
     private String phone;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 
     @Column(nullable = false,precision = 15,scale = 2)

@@ -41,6 +41,11 @@ management:
         include: health,info
 
 fraud:
-  max-Transaction-Per-Minute:5
-  fraud.suspicious-amount-multiplier:5
-  fraud.max-balance-percentage:0.90
+  max-Transaction-Per-Minute: 5
+  suspicious-amount-multiplier: 5
+  max-balance-percentage: 0.90
+
+logging:
+  level:
+    root: INFO
+    com.banking: INFO

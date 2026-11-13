@@ -13,7 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class NotificationService {
 
-    @KafkaListener(topics = "transaction.otp.grnerated")
+    @KafkaListener(topics = "transaction.otp.generated")
     public void consumeOtpGenerated(
             @Payload Map<String ,Object>payload){
 

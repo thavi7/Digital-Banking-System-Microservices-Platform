@@ -29,10 +29,10 @@ public class TransactionEventConsumer {
     private final KafkaTemplate<String,Object>kafkaTemplate;
     private final ModelMapper modelMapper;
 
-    private static final Long otpexpirymin = 1L;
+    private static final Long otpexpirymin = 5L;
     private static final String TRANSACTION_OTP_GENERATED_TOPIC = "transaction.otp.generated";
 
-    @KafkaListener(topics = "verification.requried")
+    @KafkaListener(topics = "verification.required")
     public void consumeVerificationRequired(
             @Payload Map<String, Object> payload) {
 
@@ -40,7 +40,7 @@ public class TransactionEventConsumer {
             String transactionId = (String) payload.get("transactionId");
             String accountNumber = (String) payload.get("accountNumber");
             String reason = (String) payload.get("reason");
-            String amount = (String) payload.get("amount");
+            String amount = payload.get("amount").toString();
 
 
             log.info("Verification required - transaction: {} reason: {}",
@@ -73,7 +73,7 @@ public class TransactionEventConsumer {
             otpEvent.put("accountNumber",accountNumber);
             otpEvent.put("reason",reason);
             otpEvent.put("otp",otp);
-            otpEvent.put("otp",amount);
+            otpEvent.put("amount",amount);
 
             kafkaTemplate.send(TRANSACTION_OTP_GENERATED_TOPIC,transactionId,otpEvent);
         } catch (Exception e) {

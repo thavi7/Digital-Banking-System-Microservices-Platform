@@ -78,7 +78,7 @@ public class TransactionService {
         kafkaTemplate.send(TRANSACTION_INITIATED_TOPIC,savetransaction.getId(),event);
         log.info("SAGA STEP 2 - TransactionInitiatedEvent published: {} ", savetransaction.getId());
 
-        return modelMapper.map(transaction, TransactionResponse.class);
+        return modelMapper.map(savetransaction, TransactionResponse.class);
 
     }
 

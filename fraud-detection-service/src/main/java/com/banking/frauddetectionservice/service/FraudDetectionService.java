@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class FraudDetectionService {
     private final AccountServiceClint accountServiceClint;
     private final RedisTemplate<String,String>redisTemplate;
-    private static final String VERIFICATION_REQUIRED_TOPIC = "verification.requried";
+    private static final String VERIFICATION_REQUIRED_TOPIC = "verification.required";
     private static final String FRAUD_CHECK_CLEAN_RESULT_TOPIC = "fraud.check.clean";
     private final KafkaTemplate <String,Object>kafkaTemplate;
 
@@ -53,7 +53,7 @@ public class FraudDetectionService {
             Map<String, Object>verificationEvent=new HashMap<>();
             verificationEvent.put("transactionId",transactionId);
             verificationEvent.put("accountNumber",accountNumber);
-            verificationEvent.put("ammount",ammount);
+            verificationEvent.put("amount", ammount);
             verificationEvent.put("balance",balance);
             verificationEvent.put("reason",result.getReason());
 

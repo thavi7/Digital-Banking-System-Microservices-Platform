@@ -26,7 +26,8 @@ public class FraudDetectionEventConsumer {
             fraudDetectionService.checkTransaction(payload);
 
         }catch (Exception e){
-
+            log.error("Error processing fraud check for transaction: {}",
+                    payload.get("transactionId"), e);
         }
     }
 }

@@ -3,8 +3,8 @@ spring:
     name: transaction-service
   data:
     redis:
-      host:localhost
-      port:6379
+      host: localhost
+      port: 6379
 
   datasource:
     url: jdbc:postgresql://localhost:5432/tansaction_db
@@ -23,7 +23,7 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      group-id: account-service-group
+      group-id: tansaction-service-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -48,11 +48,16 @@ server:
 
 account:
   service:
-    url:http://localhost:8081
+    url: http://localhost:8081
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+
+logging:
+  level:
+    root: INFO
+    com.banking: INFO
 

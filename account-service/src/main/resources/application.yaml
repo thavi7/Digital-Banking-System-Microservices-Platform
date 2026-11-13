@@ -45,4 +45,9 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,mappings
+
+logging:
+  level:
+    root: INFO
+    com.banking: INFO

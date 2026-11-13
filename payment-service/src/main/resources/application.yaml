@@ -26,8 +26,8 @@ server:
   port: 8083
 
 razorpay:
-  key-id: rzp_xxxx
-  key-secret:
+  key-id: xxxxx
+  key-secret: xxxxx
   webhook-secret:
 
 management:
@@ -35,3 +35,7 @@ management:
     web:
       exposure:
         include: health,info
+logging:
+  level:
+    root: INFO
+    com.banking: INFO

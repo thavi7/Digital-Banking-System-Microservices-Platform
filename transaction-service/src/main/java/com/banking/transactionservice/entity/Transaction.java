@@ -45,7 +45,6 @@ public class Transaction {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @CreationTimestamp
     private LocalDateTime completedAt;
 
 }
