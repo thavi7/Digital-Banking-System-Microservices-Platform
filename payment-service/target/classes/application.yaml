@@ -26,8 +26,8 @@ server:
   port: 8083
 
 razorpay:
-  key-id: xxxxx
-  key-secret: xxxxx
+  key-id: rzp_test_TzgMssuE2kWyKG
+  key-secret: D9lm02h2aEfnc3ht7T4sexnn
   webhook-secret:
 
 management:

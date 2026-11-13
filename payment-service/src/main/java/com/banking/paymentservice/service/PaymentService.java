@@ -73,7 +73,7 @@ public class PaymentService {
                 savedPayment.getId(),
                 razorpayOrder.get("id").toString(),
                 request.getAmount(),
-                "USD/INR",
+                "INR",
                 "CREATED",
                 keyId
         );

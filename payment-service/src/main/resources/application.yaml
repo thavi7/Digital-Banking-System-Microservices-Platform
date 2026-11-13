@@ -26,8 +26,8 @@ server:
   port: 8083
 
 razorpay:
-  key-id: xxxxx
-  key-secret: xxxxx
+  key-id: xxxx
+  key-secret: yyyy
   webhook-secret:
 
 management:
