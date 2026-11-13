@@ -1,4 +1,4 @@
-# Avionyx — Digital Banking & Fraud Detection System
+# Digital Banking & Fraud Detection System
 
 A **microservices-based digital banking platform** built with Java and Spring Boot that supports account management, account-to-account transfers, external deposits through Razorpay, real-time fraud detection, OTP-based transaction verification, and event-driven notifications.
 
